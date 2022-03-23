@@ -9,7 +9,7 @@ export default{
     background: '#FFFFFF',
     title: '#535353',
     text: '#868686',
-    text_dark: '#00000029',
+    text_dark: '#535353',
 
   },
 }

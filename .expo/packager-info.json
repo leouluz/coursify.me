@@ -1,4 +1,8 @@
 {
   "expoServerPort": 19000,
-  "packagerPort": 19000
+  "packagerPort": 19000,
+  "devToolsPort": 19002,
+  "expoServerNgrokUrl": "https://8x-nb7.leouluz.coursify-me.exp.direct",
+  "packagerNgrokUrl": "https://packager.8x-nb7.leouluz.coursify-me.exp.direct",
+  "ngrokPid": 11216
 }

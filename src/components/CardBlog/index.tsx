@@ -1,18 +1,43 @@
 import React, { useEffect, useState } from 'react'
+import RenderHtml from 'react-native-render-html';
+import { TouchableOpacity } from 'react-native'
+import { useNavigation } from '@react-navigation/native';
+import api from '../../services/api';
+
 import { 
-  BlogCardView, ThumbBlog, TitleNotice, DescriptionText, TitleReadMore, ContentBlog
+  BlogCardView, ThumbBlog, TitleNotice, 
+  TitleReadMore, ContentBlog,
 } from './styles'
 
 export function CardBlog({content} : any) {
 
-  const [uri, setUri] = useState('https://blog.coursify.me/wp-content/uploads/2019/07/sell-on-social-networks-cover-coursfiyme.jpg')
+  const [uri, setUri] = useState();
+  const navigation = useNavigation<any>();
+  
+  useEffect(() => {
+    async function loadMedias() {
+      try{
+        const response = await api.get(`media/${content.mediaId}`);
+        setUri(response.data.media_details.sizes.medium.source_url);
+        }catch(err){
+          console.log(err)
+        }
+      }
+      if(content.mediaId){
+        loadMedias();
+      }
+    }, [])
 
-  useEffect(() =>{
-    console.log(content)
-  },[])
+    function navigationTo (){
+      navigation.navigate("Posts", {
+        postId:content.id
+      });
+    }
 
   return (
         <>
+        {
+          uri &&
           <BlogCardView>
             <ThumbBlog
               source={{
@@ -20,11 +45,17 @@ export function CardBlog({content} : any) {
               }}
               />
             <ContentBlog>
-              <TitleNotice>{content.rendered}.</TitleNotice>
-              <DescriptionText>Uma landing page de alta conversão é o que todo mundo que vende online precisa ter para otimizar ...</DescriptionText>
-              <TitleReadMore>Read more</TitleReadMore>
+              <TitleNotice>{content.rendered}</TitleNotice>
+              <RenderHtml
+                contentWidth={235}
+                source={{html: content.description}}
+              />
+              <TouchableOpacity onPress={navigationTo}>
+                <TitleReadMore>Read more</TitleReadMore>
+              </TouchableOpacity>
             </ContentBlog>
           </BlogCardView>
+        }
         </>
   )
 }

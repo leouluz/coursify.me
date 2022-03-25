@@ -20,19 +20,13 @@ interface PostsProps {
   author: any;
   categories: any;
   title?: any;
-}
-
-interface MediasProps {
-  postId: Number; 
-  source_url: any; 
-
+  excerpt: any;
+  featured_media: any;
 }
 
 export function Category( { title, typeCategory } : Category) {
 
   const [post, setPost] = useState<any>()
-  const [postFinally, setPostFinally] = useState<any>()
-  const [medias, setMedias] = useState<any>()
 
   useEffect(() => {
     async function loadPost() {
@@ -43,7 +37,9 @@ export function Category( { title, typeCategory } : Category) {
           slug:item.slug, 
           author: item.author,
           categories: item.categories,
-          rendered: item.title.rendered
+          rendered: item.title.rendered,
+          mediaId: item.featured_media,
+          description: item.excerpt.rendered
         }))
         setPost(arrayFormatted);
     }catch(err){
@@ -52,32 +48,6 @@ export function Category( { title, typeCategory } : Category) {
   }
  loadPost();
   }, [typeCategory])
-
-useEffect(() => {
-  async function loadMedias() {
-    try{
-        const response = await api.get('media');
-        setMedias(
-          response.data.map( (item: { id: any; post: any, source_url: any; media_details :{ sizes: { medium : { source_url : String}} } }  ) => ({
-            source_url: item.media_details.sizes.medium.source_url,
-            postId: item.post
-          }))
-        )
-        const teste = post.map((item: { id: any; rendered: any; slug: any; }) => ({
-          id: item.id,
-          title: item.rendered,
-          slug: item.slug,
-          image: medias.filter( (media : MediasProps) => media.postId == item.id)
-        }))
-
-        setPostFinally(teste)
-
-      }catch(err){
-        console.log(err)
-      }
-    }
-      loadMedias();
-  }, [])
   
     return (
       <Container>
@@ -91,7 +61,7 @@ useEffect(() => {
           </TypeCategoryView>
           <ListView>
             <FlatList 
-              data={postFinally}
+              data={post}
               renderItem={(({item}) => <CardBlog content={item} />)}
               horizontal
               showsHorizontalScrollIndicator={false}

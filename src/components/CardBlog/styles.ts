@@ -5,15 +5,20 @@ import { RFValue } from 'react-native-responsive-fontsize';
 export const BlogCardView = styled.View`
   width: ${RFValue(235)}px;
   margin-right: ${RFValue(38)}px;
+  border-radius: 25px;
+
+  border-width: 1px;
+  border-color: #ddd;
+  border-bottom-width: 1px;
 `;
 
 export const ContentBlog = styled.View`
-  padding: 5px;
+  padding: 10px;
 `;
 
 export const ThumbBlog = styled.Image`
-  width: 235px;
-  height: 103px;
+  width: ${RFValue(232)}px;
+  height: ${RFValue(103)}px;
   border-top-right-radius: 12px;
   border-top-left-radius: 12px;
   margin-bottom: ${RFValue(15)}px;
@@ -35,6 +40,7 @@ export const DescriptionText = styled.Text`
 export const TitleReadMore = styled.Text`
   font-size: ${RFValue(16)}px;
   font-weight: bold;
-  margin-top: ${RFValue(15)}px;
+  margin-top: ${RFValue(5)}px;
   color: ${({theme}) => theme.colors.secondary};
+  margin-bottom: 5px;
 `;

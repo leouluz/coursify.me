@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { FlatList } from 'react-native';
+import { ActivityIndicator, FlatList } from 'react-native';
 import { Category } from '../../components/Category';
 import { Header } from '../../components/Header';
+import theme from '../../global/theme';
 import api from '../../services/api';
 
 interface categoryProps {
@@ -9,7 +10,7 @@ interface categoryProps {
     name: String;
 }
 
-export default function Home() {
+export function Home() {
 
   const [categoryName, setCategoryName] = useState()
 
@@ -27,16 +28,21 @@ useEffect(() => {
   loadCategory();
   }, [])
 
+
   return (
     <>
       <Header />
       {
-        categoryName &&
+        categoryName ?
         <FlatList
           data={categoryName}
           keyExtractor={(item) => item.id}
           renderItem={({ item }) => <Category title={item.name} typeCategory={item.id}  />}
           showsVerticalScrollIndicator={false}
+        /> :
+        <ActivityIndicator 
+        color={theme.colors.primary}
+        style={{marginTop:18}}
         />
       }
     </>
